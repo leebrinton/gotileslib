@@ -2,12 +2,20 @@ package tileslib
 
 import "fmt"
 
+// GAME_SOLVED is used to determine if a game is solved by comparing it to a GameState.SolvedState.
 const GAME_SOLVED = uint16(0)
+
+// NUM_GAME_CELLS is the number of cells in the game matrix.
 const NUM_GAME_CELLS = 16
+
+// UINT16_MAX is the maximum value that be held in an unsigned 16 bit integer.
 const UINT16_MAX = uint16(65535)
 
 var _bitOnMasks [NUM_GAME_CELLS]uint16
 var _bitOffMasks [NUM_GAME_CELLS]uint16
+
+// GameState is a data structure to hold game level data.
+// SolvedState is used to track whether the  game is solved or not.
 
 type GameState struct {
 	SolvedState uint16
@@ -16,7 +24,6 @@ type GameState struct {
 func init() {
 	loadBitMasks(&_bitOnMasks, &_bitOffMasks)
 }
-
 
 func twoToTheX(x byte) uint16 {
 	switch x {
@@ -53,20 +60,26 @@ func loadBitMasks(onmasks *[NUM_GAME_CELLS]uint16, offmasks *[NUM_GAME_CELLS]uin
 	loadBitOffMasks(onmasks, offmasks)
 }
 
+// NewGameState creates a new GameState data structure.
 func NewGameState() *GameState {
 	gs := new(GameState)
 	gs.SolvedState = GAME_SOLVED
 	return gs
 }
 
+// SetBitOn set the indexth bit of the state variable on.
+
 func (gs *GameState) SetBitOn(index int) {
 	gs.SolvedState = uint16(gs.SolvedState | _bitOnMasks[index])
 }
 
+// SetBitOff set the indexth bit of the state variable off.
 func (gs *GameState) SetBitOff(index int) {
 	gs.SolvedState = uint16(gs.SolvedState & _bitOffMasks[index])
 }
 
+// Solved determine if the game is solved. Return TRUE if the player has won
+// otherwise return FALSE.
 func (gs *GameState) Solved() bool {
 	result := false
 
@@ -76,6 +89,10 @@ func (gs *GameState) Solved() bool {
 	return result
 }
 
+// Update Update the state variable. Given two indexes a cell index and
+// a cell value index, If the cell index and the cell value index are equal
+// (the cell holds the proper value), then set the cell indexth bit of the
+// state variable on otherwise set it off.
 func (gs *GameState) Update(currentIndex int, correctIndex int) {
 	if currentIndex == correctIndex {
 		gs.SetBitOff(currentIndex)
@@ -84,6 +101,8 @@ func (gs *GameState) Update(currentIndex int, correctIndex int) {
 	}
 }
 
+// SolvedValue returns a value from 0 to 16 that is the number of cells that
+// are in their solved position.
 func (gs *GameState) SolvedValue() int {
 	test := uint16(0)
 	result := 0
@@ -98,6 +117,8 @@ func (gs *GameState) SolvedValue() int {
 	return result
 }
 
+// SolvedPercent returns the percentage of cells that are in their solved
+// position.
 func (gs *GameState) SolvedPercent() int {
 	value := gs.SolvedValue()
 	tmp := float32(float32(value) / float32(NUM_GAME_CELLS))
@@ -105,6 +126,7 @@ func (gs *GameState) SolvedPercent() int {
 	return int(tmp * 100)
 }
 
+// String returns a string representation of a GameState.
 func (gs GameState) String() string {
 	solved := "No"
 	if gs.Solved() {
@@ -129,7 +151,7 @@ func (gs GameState) String() string {
 func maskArrayToHtml(array *[NUM_GAME_CELLS]uint16) string {
 	result := "<table><tr>"
 
-	for i:= 0; i < NUM_GAME_CELLS; i++ {
+	for i := 0; i < NUM_GAME_CELLS; i++ {
 		result += "<td>"
 		result += fmt.Sprintf("%d", array[i])
 		result += "</td>"
@@ -138,6 +160,7 @@ func maskArrayToHtml(array *[NUM_GAME_CELLS]uint16) string {
 	return result
 }
 
+// Markdown	returns a markdown representation of a GameState.
 func (gs GameState) Markdown() string {
 	solved := "No"
 	if gs.Solved() {

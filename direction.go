@@ -7,6 +7,7 @@ import (
 
 var _random *rand.Rand
 
+// Direction is an enum for the four directions Up, Doen, Left and Right.
 type Direction int
 
 const (
@@ -22,6 +23,7 @@ func init() {
 	_random = rand.New(source)
 }
 
+// String return a string representation of a Direction.
 func (d Direction) String() string {
 	result := ""
 
@@ -36,41 +38,43 @@ func (d Direction) String() string {
 		result = "Left"
 
 	case Right:
-		result = "Right";
+		result = "Right"
 	}
 	return result
 }
 
+// RandomDirection returns a randomly generated Direction.
 func RandomDirection() Direction {
-	raw := _random.Intn(4)            
-	d := Up;
-    
+	raw := _random.Intn(4)
+	d := Up
+
 	switch raw {
 	case 0:
-		d = Up;
-        
+		d = Up
+
 	case 1:
 		d = Down
-        
+
 	case 2:
 		d = Left
-        
+
 	case 3:
 		d = Right
 	}
-	return d;
+	return d
 }
 
+// ReverseDirection returns the opposite Direction.
 func ReverseDirection(d Direction) Direction {
 	result := d
 
 	switch d {
 	case Right:
 		result = Left
-                    
+
 	case Left:
 		result = Right
-                    
+
 	case Down:
 		result = Up
 

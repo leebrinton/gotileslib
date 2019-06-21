@@ -12,7 +12,7 @@ func TestNewCell(t *testing.T) {
 
 }
 
-func TesttransResult(t *testing.T) {
+func TestTransResult(t *testing.T) {
 	tr := Pending
 
 	if tr != 0 {
@@ -24,7 +24,7 @@ func TesttransResult(t *testing.T) {
 	if tr != 1 {
 		t.Error(fmt.Sprintf("Var assigned as Ok should be 1 but is %d", tr))
 	}
-	
+
 	tr = Exception
 
 	if tr != 2 {
@@ -33,7 +33,7 @@ func TesttransResult(t *testing.T) {
 
 	tr = Error
 
-	if tr != 1 {
+	if tr != 3 {
 		t.Error(fmt.Sprintf("Var assigned as Error should be 3 but is %d", tr))
 	}
 }
@@ -56,9 +56,8 @@ func TestModel(t *testing.T) {
 	if model.lastTrans.destIndex != 0 {
 		t.Error("lastTrans.destIndex should start at 0")
 	}
-	
-	
-	if model.startTime.IsZero() {
-		t.Error("Model.startTime should have been initialized")
+
+	if model.StartTime.IsZero() {
+		t.Error("Model.StartTime should have been initialized")
 	}
 }
