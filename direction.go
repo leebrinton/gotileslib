@@ -7,7 +7,7 @@ import (
 
 var _random *rand.Rand
 
-// Direction is an enum for the four directions Up, Doen, Left and Right.
+// Direction is an enum for the four directions Up, Down, Left and Right.
 type Direction int
 
 const (
