@@ -1,3 +1,11 @@
+// Package tileslib core types for tiles puzzle games.
+//
+// Copyright (C) 2021 H. Lee Brinton.
+// License GPLv3+: GNU GPL version 3 or later
+// <http://gnu.org/licenses/gpl.html>
+// This is free software: you are free to change and redistribute it.
+// There is NO WARRANTY, to the extent permitted by law.
+//
 package tileslib
 
 import (
@@ -10,6 +18,10 @@ var _random *rand.Rand
 // Direction is an enum for the four directions Up, Down, Left and Right.
 type Direction int
 
+// Up refering the space above
+// Down refering to the space below
+// Left refering to the space to the left
+// RIght refering to the space to the right
 const (
 	Up Direction = iota
 	Down

@@ -1,22 +1,29 @@
+// Package tileslib core types for tiles puzzle games.
+//
+// Copyright (C) 2021 H. Lee Brinton.
+// License GPLv3+: GNU GPL version 3 or later
+// <http://gnu.org/licenses/gpl.html>
+// This is free software: you are free to change and redistribute it.
+// There is NO WARRANTY, to the extent permitted by law.
+//
 package tileslib
 
 import "fmt"
 
-// GAME_SOLVED is used to determine if a game is solved by comparing it to a GameState.SolvedState.
-const GAME_SOLVED = uint16(0)
+// GameSolved is used to determine if a game is solved by comparing it to a GameState.SolvedState.
+const GameSolved = uint16(0)
 
-// NUM_GAME_CELLS is the number of cells in the game matrix.
-const NUM_GAME_CELLS = 16
+// NumGameCells is the number of cells in the game matrix.
+const NumGameCells = 16
 
-// UINT16_MAX is the maximum value that be held in an unsigned 16 bit integer.
-const UINT16_MAX = uint16(65535)
+// UInt16Max is the maximum value that be held in an unsigned 16 bit integer.
+const UInt16Max = uint16(65535)
 
-var _bitOnMasks [NUM_GAME_CELLS]uint16
-var _bitOffMasks [NUM_GAME_CELLS]uint16
+var _bitOnMasks [NumGameCells]uint16
+var _bitOffMasks [NumGameCells]uint16
 
 // GameState is a data structure to hold game level data.
 // SolvedState is used to track whether the  game is solved or not.
-
 type GameState struct {
 	SolvedState uint16
 }
@@ -43,19 +50,19 @@ func twoToTheX(x byte) uint16 {
 	return uint16(0)
 }
 
-func loadBitOnMasks(onmasks *[NUM_GAME_CELLS]uint16) {
-	for i := 0; i < NUM_GAME_CELLS; i++ {
+func loadBitOnMasks(onmasks *[NumGameCells]uint16) {
+	for i := 0; i < NumGameCells; i++ {
 		onmasks[i] = twoToTheX(byte(i))
 	}
 }
 
-func loadBitOffMasks(onmasks *[NUM_GAME_CELLS]uint16, offmasks *[NUM_GAME_CELLS]uint16) {
-	for i := 0; i < NUM_GAME_CELLS; i++ {
-		offmasks[i] = uint16(UINT16_MAX - onmasks[i])
+func loadBitOffMasks(onmasks *[NumGameCells]uint16, offmasks *[NumGameCells]uint16) {
+	for i := 0; i < NumGameCells; i++ {
+		offmasks[i] = uint16(UInt16Max - onmasks[i])
 	}
 }
 
-func loadBitMasks(onmasks *[NUM_GAME_CELLS]uint16, offmasks *[NUM_GAME_CELLS]uint16) {
+func loadBitMasks(onmasks *[NumGameCells]uint16, offmasks *[NumGameCells]uint16) {
 	loadBitOnMasks(onmasks)
 	loadBitOffMasks(onmasks, offmasks)
 }
@@ -63,7 +70,7 @@ func loadBitMasks(onmasks *[NUM_GAME_CELLS]uint16, offmasks *[NUM_GAME_CELLS]uin
 // NewGameState creates a new GameState data structure.
 func NewGameState() *GameState {
 	gs := new(GameState)
-	gs.SolvedState = GAME_SOLVED
+	gs.SolvedState = GameSolved
 	return gs
 }
 
@@ -83,7 +90,7 @@ func (gs *GameState) SetBitOff(index int) {
 func (gs *GameState) Solved() bool {
 	result := false
 
-	if gs.SolvedState == GAME_SOLVED {
+	if gs.SolvedState == GameSolved {
 		result = true
 	}
 	return result
@@ -107,7 +114,7 @@ func (gs *GameState) SolvedValue() int {
 	test := uint16(0)
 	result := 0
 
-	for i := 0; i < NUM_GAME_CELLS; i++ {
+	for i := 0; i < NumGameCells; i++ {
 		test = (gs.SolvedState & _bitOnMasks[i])
 
 		if test == 0 {
@@ -121,7 +128,7 @@ func (gs *GameState) SolvedValue() int {
 // position.
 func (gs *GameState) SolvedPercent() int {
 	value := gs.SolvedValue()
-	tmp := float32(float32(value) / float32(NUM_GAME_CELLS))
+	tmp := float32(float32(value) / float32(NumGameCells))
 
 	return int(tmp * 100)
 }
@@ -148,10 +155,10 @@ func (gs GameState) String() string {
 	return result
 }
 
-func maskArrayToHtml(array *[NUM_GAME_CELLS]uint16) string {
+func maskArrayToHtml(array *[NumGameCells]uint16) string {
 	result := "<table><tr>"
 
-	for i := 0; i < NUM_GAME_CELLS; i++ {
+	for i := 0; i < NumGameCells; i++ {
 		result += "<td>"
 		result += fmt.Sprintf("%d", array[i])
 		result += "</td>"

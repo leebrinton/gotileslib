@@ -1,22 +1,31 @@
 // Package tileslib contains the backend or non user interface parts of a
-// Tiles application.
+// Tiles puzzle game.
+//
+// Copyright (C) 2021 H. Lee Brinton.
+// License GPLv3+: GNU GPL version 3 or later
+// <http://gnu.org/licenses/gpl.html>
+// This is free software: you are free to change and redistribute it.
+// There is NO WARRANTY, to the extent permitted by law.
+//
 package tileslib
 
-import "fmt"
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
-// MAX_GAME_CELL_INDEX is the max zero based index into an array of cells.
-const MAX_GAME_CELL_INDEX = byte(15)
+// MaxGameCellIndex is the max zero based index into an array of cells.
+const MaxGameCellIndex = byte(15)
 
-// NUM_GAME_COLS is the number of columns in the game.
-const NUM_GAME_COLS = byte(4)
+// NumGameCols is the number of columns in the game.
+const NumGameCols = byte(4)
 
-// NUM_GAME_ROWS is the number of rows in the game.
-const NUM_GAME_ROWS = byte(4)
+// NumGameRows is the number of rows in the game.
+const NumGameRows = byte(4)
 
-// CELL_NOT_FOUND is value used by cell searching functions to indicate that
+// CellNotFound is value used by cell searching functions to indicate that
 // a cell was not found.
-const CELL_NOT_FOUND = -1
+const CellNotFound = -1
 
 // Cell represents a tiles game cell.
 type Cell struct {
@@ -99,7 +108,7 @@ type Model struct {
 	state          *GameState
 	StartTime      time.Time
 	emptyCellIndex byte
-	cells          [NUM_GAME_CELLS]Cell
+	cells          [NumGameCells]Cell
 	lastTrans      GameTransaction
 }
 
@@ -134,10 +143,10 @@ func (m *Model) Solved() bool {
 // StartNewGame reinitialize a Model in preperation for playing a game.
 func (m *Model) StartNewGame(scrambleIterations int) {
 	if scrambleIterations == 0 {
-		scrambleIterations = DEFAULT_SCRAMBLE_ITERATIONS
+		scrambleIterations = DefaultScrambleIterations
 	}
 
-	m.state.SolvedState = GAME_SOLVED
+	m.state.SolvedState = GameSolved
 	m.loadCells()
 	m.scramble(scrambleIterations)
 	m.StartTime = time.Now()
@@ -172,11 +181,11 @@ func (m *Model) updateState(index int) {
 }
 
 func (m *Model) loadCells() {
-	for i := 0; i < NUM_GAME_CELLS; i++ {
+	for i := 0; i < NumGameCells; i++ {
 		m.cells[i].cindex = byte(i)
 		m.cells[i].value = byte(i + 1)
 	}
-	m.emptyCellIndex = MAX_GAME_CELL_INDEX
+	m.emptyCellIndex = MaxGameCellIndex
 }
 
 func (m *Model) scramble(iterations int) {
@@ -187,8 +196,8 @@ func (m *Model) scramble(iterations int) {
 }
 
 func (m *Model) swapCells(index1 int, index2 int) int {
-	if index1 == CELL_NOT_FOUND || index2 == CELL_NOT_FOUND {
-		return CELL_NOT_FOUND
+	if index1 == CellNotFound || index2 == CellNotFound {
+		return CellNotFound
 	}
 
 	var temp Cell
@@ -209,36 +218,36 @@ func (m *Model) swapCells(index1 int, index2 int) int {
 
 // RowFromIndex returns the row number of a given cell index.
 func RowFromIndex(index byte) byte {
-	return byte(index / NUM_GAME_ROWS)
+	return byte(index / NumGameRows)
 }
 
 // ColFromIndex returns a column number of a given cell index.
 func ColFromIndex(index byte) byte {
-	return (byte)(index % NUM_GAME_COLS)
+	return (byte)(index % NumGameCols)
 }
 
 func indexOfCellAbove(cindex byte) int {
-	result := CELL_NOT_FOUND
+	result := CellNotFound
 	row := RowFromIndex(cindex)
 
 	if row > 0 {
-		result = int(cindex - NUM_GAME_COLS)
+		result = int(cindex - NumGameCols)
 	}
 	return result
 }
 
 func indexOfCellBelow(cindex byte) int {
-	result := CELL_NOT_FOUND
+	result := CellNotFound
 	row := RowFromIndex(cindex)
 
 	if row < 3 {
-		result = int(cindex + NUM_GAME_COLS)
+		result = int(cindex + NumGameCols)
 	}
 	return result
 }
 
 func indexOfCellLeft(cindex byte) int {
-	result := CELL_NOT_FOUND
+	result := CellNotFound
 	col := ColFromIndex(cindex)
 
 	if col > 0 {
@@ -248,7 +257,7 @@ func indexOfCellLeft(cindex byte) int {
 }
 
 func indexOfCellRight(cindex byte) int {
-	result := CELL_NOT_FOUND
+	result := CellNotFound
 	col := ColFromIndex(cindex)
 
 	if col < 3 {
@@ -286,7 +295,7 @@ func (m *Model) moveEmptyCell(direction Direction) {
 
 	swapResult := m.swapCells(int(m.emptyCellIndex), destIndex)
 
-	if swapResult == CELL_NOT_FOUND {
+	if swapResult == CellNotFound {
 		m.lastTrans.result = Exception
 	} else {
 		m.lastTrans.result = Ok
@@ -306,10 +315,10 @@ func (m *Model) MoveCell(directions Direction, mode CommandModeType) {
 	}
 }
 
-func cellArrayToHtml(array *[NUM_GAME_CELLS]Cell) string {
+func cellArrayToHtml(array *[NumGameCells]Cell) string {
 	result := "<table><tr>"
 
-	for i := 0; i < NUM_GAME_CELLS; i++ {
+	for i := 0; i < NumGameCells; i++ {
 		result += "<td>"
 		result += fmt.Sprintf("%d", array[i].value)
 		result += "</td>"
@@ -350,7 +359,7 @@ func (m *Model) String() string {
 
 	result += "cells ["
 
-	for i := 0; i < NUM_GAME_CELLS; i++ {
+	for i := 0; i < NumGameCells; i++ {
 		if i > 0 {
 			result += ", "
 		}

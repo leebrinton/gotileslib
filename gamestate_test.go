@@ -1,7 +1,17 @@
+// Package tileslib core types for tiles puzzle games.
+//
+// Copyright (C) 2021 H. Lee Brinton.
+// License GPLv3+: GNU GPL version 3 or later
+// <http://gnu.org/licenses/gpl.html>
+// This is free software: you are free to change and redistribute it.
+// There is NO WARRANTY, to the extent permitted by law.
+//
 package tileslib
 
-import "fmt"
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestNewGameState(t *testing.T) {
 	gs := NewGameState()
@@ -10,11 +20,10 @@ func TestNewGameState(t *testing.T) {
 		t.Error("Result of NewGameState() is nil!")
 	}
 
-	if gs.SolvedState != GAME_SOLVED {
-		t.Error(fmt.Sprintf("SolvedState should be %d, but is %d", GAME_SOLVED, gs.SolvedState))
+	if gs.SolvedState != GameSolved {
+		t.Error(fmt.Sprintf("SolvedState should be %d, but is %d", GameSolved, gs.SolvedState))
 	}
 }
-
 
 func TestSetBitOn(t *testing.T) {
 	gs := NewGameState()
@@ -22,7 +31,7 @@ func TestSetBitOn(t *testing.T) {
 	gs.SetBitOn(0)
 
 	if gs.SolvedState != 1 {
-		t.Error(fmt.Sprintf( "After SetBitOn(0) SolvedState should be 1 but is %d", gs.SolvedState))
+		t.Error(fmt.Sprintf("After SetBitOn(0) SolvedState should be 1 but is %d", gs.SolvedState))
 	}
 }
 
@@ -32,22 +41,22 @@ func TestSetBitOff(t *testing.T) {
 	gs.SetBitOn(0)
 	gs.SetBitOff(0)
 
-	if gs.SolvedState != GAME_SOLVED {
-		t.Error(fmt.Sprintf( "After SetBitOff(0) SolvedState should be 0 but is %d", gs.SolvedState))
+	if gs.SolvedState != GameSolved {
+		t.Error(fmt.Sprintf("After SetBitOff(0) SolvedState should be 0 but is %d", gs.SolvedState))
 	}
 }
 
 func TestUpdate(t *testing.T) {
 	gs := NewGameState()
 
-	gs.Update(0, 14)	
+	gs.Update(0, 14)
 	if gs.SolvedState != 1 {
-		t.Error(fmt.Sprintf( "After Update(0, 14) SolvedState should be 1 but is %d", gs.SolvedState))
+		t.Error(fmt.Sprintf("After Update(0, 14) SolvedState should be 1 but is %d", gs.SolvedState))
 	}
-	
+
 	gs.Update(0, 0)
-	if gs.SolvedState != GAME_SOLVED {
-		t.Error(fmt.Sprintf( "After Update(0, 0 SolvedState should be 0 but is %d", gs.SolvedState))
+	if gs.SolvedState != GameSolved {
+		t.Error(fmt.Sprintf("After Update(0, 0 SolvedState should be 0 but is %d", gs.SolvedState))
 	}
 }
 
@@ -90,6 +99,5 @@ func TestSolvedPercent(t *testing.T) {
 
 	if currPct != 50 {
 		t.Error(fmt.Sprintf("After setting the first 8 bits on there should still be 8 bits off giving a solved percent of 50. SolvedPercent = %d", currPct))
-	}	
+	}
 }
-

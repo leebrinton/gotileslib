@@ -1,10 +1,18 @@
+// Package tileslib core types for tiles puzzle games.
+//
+// Copyright (C) 2021 H. Lee Brinton.
+// License GPLv3+: GNU GPL version 3 or later
+// <http://gnu.org/licenses/gpl.html>
+// This is free software: you are free to change and redistribute it.
+// There is NO WARRANTY, to the extent permitted by law.
+//
 package tileslib
 
-// DEFAULT_SCRAMBLE_ITERATIONS is the default number of random moves that will
+// DefaultScrambleIterations is the default number of random moves that will
 // be attempted when scrambling a new game.
-const DEFAULT_SCRAMBLE_ITERATIONS = 2500
+const DefaultScrambleIterations = 2500
 
-// CommandModeAType is an enum of the possible command modes.  Values are
+// CommandModeType is an enum of the possible command modes.  Values are
 // EmptyCellCentric and ValueCellCentric.
 type CommandModeType int
 

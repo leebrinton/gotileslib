@@ -1,7 +1,17 @@
+// Package tileslib core types for tiles puzzle games.
+//
+// Copyright (C) 2021 H. Lee Brinton.
+// License GPLv3+: GNU GPL version 3 or later
+// <http://gnu.org/licenses/gpl.html>
+// This is free software: you are free to change and redistribute it.
+// There is NO WARRANTY, to the extent permitted by law.
+//
 package tileslib
 
-import "fmt"
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestNewCell(t *testing.T) {
 	cell := NewCell()
@@ -41,7 +51,7 @@ func TestTransResult(t *testing.T) {
 func TestModel(t *testing.T) {
 	model := NewModel()
 
-	if model.state.SolvedState != GAME_SOLVED {
+	if model.state.SolvedState != GameSolved {
 		t.Error("SolvedState should start solved")
 	}
 
